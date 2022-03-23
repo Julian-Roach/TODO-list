@@ -2,10 +2,11 @@
 THE CHANGELOG OF TODO-list
 
 
+with DOSELTA v1.0.4
 (v1.0.0) The original version:
 - This is a TODO list program. Made with DOSELTA.
 
-
+with DOSELTA v1.1.0
 (v1.0.1) (23.3.2022) Minor fixes:
 - Added the changelog file.
 - Fixed the edit() function; instead of a "?:" which would return 0 if the index is right, and the desired index when
