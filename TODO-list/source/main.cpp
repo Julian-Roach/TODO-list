@@ -35,7 +35,8 @@ int main()
 
 	// Add arguments.
 	std::string arg1, arg2;
-	commander.addArgument(&arg1), (&arg2);
+	commander.addArgument(&arg1);
+	commander.addArgument(&arg2);
 
 	// Create the DONE storage.
 	DOS::BookFile DONEs("DONEs");
@@ -50,8 +51,8 @@ int main()
 
 
 	DOS::Command add("add", "Use to add some task.", [&TODOs, &arg1] { TODOs.addPage(arg1); });
-	DOS::Command edit("edit", "Use to edit some task. (index, content)", [&TODOs, &arg1, &arg2] { unsigned page = std::stoi(arg1); TODOs.setPage(page > TODOs.size() || page < 0 ? page : 0, arg2); });
-	DOS::Command remove("remove", "Use to remove a task from the list.", [&TODOs, &arg1] { unsigned int page = std::stoi(arg1); TODOs.removePage(page > TODOs.size() || page < 0 ? page : 0); });
+	DOS::Command edit("edit", "Use to edit some task. (index, content)", [&TODOs, &arg1, &arg2] { unsigned int page = std::stoi(arg1) - 1; if (!DOS::indexCheck(page, TODOs.size(), USERMISTAKE_INDEXBAD)) { return; } TODOs.setPage(page, arg2); });
+	DOS::Command remove("remove", "Use to remove a task from the list.", [&TODOs, &arg1] { unsigned int page = std::stoi(arg1) - 1; if (!DOS::indexCheck(page, TODOs.size(), USERMISTAKE_INDEXBAD)) { return; } TODOs.removePage(page); });
 	
 	DOS::Command done("done", "Use to mark a task as done", [&TODOs, &DONEs, &arg1] { moveToBook(TODOs, DONEs, stoi(arg1) - 1); });
 	DOS::Command resume("resume", "Use to mark a task as undone", [&TODOs, &DONEs, &arg1] { moveToBook(DONEs, TODOs, stoi(arg1) - 1); });
@@ -76,7 +77,6 @@ int main()
 
 	while (running)
 	{
-
 		LOG(SPLITTING_LINE);
 		listBooksParallel(TODOs, DONEs);
 
